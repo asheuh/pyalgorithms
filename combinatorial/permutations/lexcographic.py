@@ -1,4 +1,7 @@
-def lexco_permutations(w):
+from time import sleep
+
+
+def lexco_permutations(x):
     """
     Lexicographic permutation generation
     
@@ -15,56 +18,89 @@ def lexco_permutations(w):
     The result obtained is in lexicographical order or alphabetincal order
     """
     n = len(w) - 1
-    indices = [i for i in range(len(w))]
+    pool = list(w)
 
     while 1:
         j = n - 1
-        a = ''.join(w[i] for i in indices)
+        yield "".join(c for c in pool)
+
+        # Find the largest j such that pool[j] can be increased
+        while pool[j] >= pool[j + 1]:
+            j -= 1
+
+        # Increase pool[j] by the smallest feasible amount
+        # in this case pool[l] is the smallest element greater than
+        # pool[j] that can legitimately follow pool[0] ... pool[j-1] in a permutation
         l = n
-        yield a
+        while pool[j] >= pool[l]:
+            l -= 1
+        pool[j], pool[l] = pool[l], pool[j]
 
-        while j >= 0:
-            # Find the largest j such that a[j] can be increased
-            if a[j] >= a[j + 1]:
-                j -= 1
-                continue
-
-            # Increase a[j] by the smallest feasible amount
-            # in this case a[l] is the smallest element greater than
-            # a[j] that can legitimately follow a[0] ... a[j-1] in a permutation
-            if a[j] >= a[l]:
-                l -= 1
-                continue
-            indices[j], indices[l] = indices[l], indices[j]
-
-            # Reverse aj+1 ... a[n]
-            # Find the lexicographically least way to extend the new
-            # a[0]...a[j] to a complete pattern
-            k = j + 1
-            l = n
-            while k < l:
-                indices[k], indices[l] = indices[l], indices[k]
-                k = k + 1
-                l = l - 1
-            break
+        # Reverse pool[j+1] ... pool[n]
+        # Find the lexicographically least way to extend the new
+        # pool[0]...pool[j] to a complete pattern
+        k = j + 1
+        c = n
+        while k < l:
+            pool[k], pool[c] = pool[c], pool[k]
+            k = k + 1
+            c = c - 1
         if j < 0:
             break
 
 
-def elegant_lexco_permutations(w):
+def lexco_permutations_reverse(w):
+    l = len(w)
+    n = l - 1
+    pool = list(w)
+    i = 1
+
+    while i < n:
+        while pool[i] < pool[i - 1]:
+            i += 1
+
+        j = 0
+        while pool[j] > pool[i]:
+            j += 1
+
+        pool[i], pool[j] = pool[j], pool[i]
+
+        k = i - 1
+        c = 0
+        while k > c:
+            pool[k], pool[c] = pool[c], pool[k]
+            k -= 1
+            c += 1
+        break
+    return ''.join(c for c in pool)
+
+
+def elegant_lexco_permutations(x):
     """
     Lexicographic permutations with restricted prefixes
     """
-    pass
+    w = str(x)
+    n = len(w)
+    k = 1
+    L = [l for l in range(n)]
+    U = [u for u in range(1, n + 1)]
+
+    while n:
+        for k in range(n):
+            L[k] = k + 1
+            L[n - 1] = 0
+            print(L, k)
 
 
 def testit(w):
-    perms = list(lexco_permutations(w))
-    return perms
+    return lexco_permutations(w)
 
 
 if __name__ == '__main__':
-    w = input()
+    w = input("Enter value to permute: ")
+    #     elegant_lexco_permutations(w)
+    #     result = lexco_permutations_reverse(w)
+    #     print(result)
 
-    result = testit(w)
+    result = list(testit(w))
     print(result)
