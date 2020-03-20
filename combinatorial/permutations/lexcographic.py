@@ -22,17 +22,16 @@ def lexco_permutations(x):
 
     while 1:
         j = n - 1
-        yield "".join(c for c in pool)
 
         # Find the largest j such that pool[j] can be increased
-        while pool[j] >= pool[j + 1]:
+        while pool[j] > pool[j + 1]:
             j -= 1
 
         # Increase pool[j] by the smallest feasible amount
         # in this case pool[l] is the smallest element greater than
         # pool[j] that can legitimately follow pool[0] ... pool[j-1] in a permutation
         l = n
-        while pool[j] >= pool[l]:
+        while pool[j] > pool[l]:
             l -= 1
         pool[j], pool[l] = pool[l], pool[j]
 
@@ -41,10 +40,15 @@ def lexco_permutations(x):
         # pool[0]...pool[j] to a complete pattern
         k = j + 1
         c = n
-        while k < l:
+        while k < c:
             pool[k], pool[c] = pool[c], pool[k]
             k = k + 1
             c = c - 1
+
+        if pool != list(w):
+            yield "".join(c for c in pool)
+        else:
+            break
         if j < 0:
             break
 
@@ -97,10 +101,13 @@ def testit(w):
 
 
 if __name__ == '__main__':
-    w = input("Enter value to permute: ")
-    #     elegant_lexco_permutations(w)
-    #     result = lexco_permutations_reverse(w)
-    #     print(result)
+    T = int(input("Enter number of test cases: "))
 
-    result = list(testit(w))
-    print(result)
+    for _ in range(T):
+        w = input("Enter value to permute: ")
+        #     elegant_lexco_permutations(w)
+        #     result = lexco_permutations_reverse(w)
+        #     print(result)
+
+        result = list(testit(w))
+        print(result)
