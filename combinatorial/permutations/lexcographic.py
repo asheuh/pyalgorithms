@@ -1,49 +1,54 @@
+"""
+imports
+"""
+from typing import Generator
 from time import sleep
 
 
-def lexco_permutations(x):
+def lexco_permutations(_x: str) -> Generator:
     """
     Lexicographic permutation generation
-    
     This algorithm generates all permutations of {w1, w2 ... wn}
     visiting them in lexicographic order
 
-    >>> w = 'brian'
+    >>> w = 'bot'
     >>> result = permutations(w)
     >>> result
-    >>> ['bot', 'bto', 'obt', 'otb', 'tbo', 'tob']
+    >>> ['bot', 'bto', 'obt', 'otb', 'tbo', 'tob', 'obt']
 
-    Result
+    result
     ------
     The result obtained is in lexicographical order or alphabetincal order
     """
-    n = len(w) - 1
-    pool = list(w)
+    _n = len(_x) - 1
+    pool = list(_x)
+
+    yield "".join(c for c in pool)
 
     while 1:
-        j = n - 1
+        j = _n - 1
 
         # Find the largest j such that pool[j] can be increased
-        while pool[j] > pool[j + 1]:
+        while pool[j] >= pool[j + 1]:
             j -= 1
 
         # Increase pool[j] by the smallest feasible amount
         # in this case pool[l] is the smallest element greater than
         # pool[j] that can legitimately follow pool[0] ... pool[j-1] in a permutation
-        l = n
-        while pool[j] > pool[l]:
-            l -= 1
-        pool[j], pool[l] = pool[l], pool[j]
+        _l = _n
+        while pool[j] >= pool[_l]:
+            _l -= 1
+        pool[j], pool[_l] = pool[_l], pool[j]
 
         # Reverse pool[j+1] ... pool[n]
         # Find the lexicographically least way to extend the new
         # pool[0]...pool[j] to a complete pattern
         k = j + 1
-        c = n
-        while k < c:
-            pool[k], pool[c] = pool[c], pool[k]
+        _c = _n
+        while k < _c:
+            pool[k], pool[_c] = pool[_c], pool[k]
             k = k + 1
-            c = c - 1
+            _c = _c - 1
 
         if pool != list(w):
             yield "".join(c for c in pool)
@@ -53,51 +58,78 @@ def lexco_permutations(x):
             break
 
 
-def lexco_permutations_reverse(w):
-    l = len(w)
-    n = l - 1
-    pool = list(w)
-    i = 1
+def lexperms_reverse(_w: str) -> Generator:
+    """
+    less efficient but works
+    a more effient one is the one the follow(elegant_lexperms_fact())
+    """
+    _l = len(_w)
+    _n = _l - 1
+    pool = list(_w)
 
-    while i < n:
-        while pool[i] < pool[i - 1]:
+    while _n:
+        i = 1
+        yield ''.join(c for c in pool)
+
+        while pool[i] <= pool[i - 1]:
             i += 1
+            if i > _n:
+                break
+
+        if i > _n:
+            break
 
         j = 0
-        while pool[j] > pool[i]:
+        while pool[j] >= pool[i]:
             j += 1
 
         pool[i], pool[j] = pool[j], pool[i]
 
         k = i - 1
-        c = 0
-        while k > c:
-            pool[k], pool[c] = pool[c], pool[k]
+        _c = 0
+        while k > _c:
+            pool[k], pool[_c] = pool[_c], pool[k]
             k -= 1
-            c += 1
-        break
-    return ''.join(c for c in pool)
+            _c += 1
 
 
-def elegant_lexco_permutations(x):
+def elegant_lexperms_fact(_x: str) -> Generator:
     """
-    Lexicographic permutations with restricted prefixes
+    Lexicographic permutations in reverse order
+    based on factorial counting(recursion)
     """
-    w = str(x)
-    n = len(w)
-    k = 1
-    L = [l for l in range(n)]
-    U = [u for u in range(1, n + 1)]
 
-    while n:
-        for k in range(n):
-            L[k] = k + 1
-            L[n - 1] = 0
-            print(L, k)
+    pool = list(_x)
+    _l = len(pool)
+    _n = _l - 1
+    i = _n
+    _c = [0] * _l
 
+    while i > 1:
+        _c[i] = 1
+        i -= 1
+    yield ''.join(c for c in pool)
 
-def testit(w):
-    return lexco_permutations(w)
+    while i:
+        if i > _n:
+            break
+
+        if pool[_c[i]] < pool[i]:
+            pool[i], pool[_c[i]] = pool[_c[i]], pool[i]
+
+            k = i - 1
+            j = 0
+            while j < k:
+                pool[j], pool[k] = pool[k], pool[j]
+                k -= 1
+                j += 1
+
+            _c[i] = _c[i] + 1
+            i = 1
+            yield ''.join(c for c in pool)
+        else:
+            _c[i] = 0
+            i = i + 1
 
 
 if __name__ == '__main__':
@@ -105,9 +137,14 @@ if __name__ == '__main__':
 
     for _ in range(T):
         w = input("Enter value to permute: ")
-        #     elegant_lexco_permutations(w)
-        #     result = lexco_permutations_reverse(w)
-        #     print(result)
+        r_e_f = list(elegant_lexperms_fact(w))
 
-        result = list(testit(w))
-        print(result)
+        r_l_r = list(lexperms_reverse(w))
+
+        l_p = list(lexco_permutations(w))
+        print("elegant_lexperms_fact", r_e_f)
+        print(f"{'-' * 113}")
+        print("lexperms_reverse", r_l_r)
+        print(f"{'-' * 113}")
+        print("lexco_permutations", l_p)
+        print(f"{'-' * 113}")
