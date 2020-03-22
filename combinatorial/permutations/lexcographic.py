@@ -3,6 +3,7 @@ imports
 """
 from typing import Generator
 from time import sleep
+from pprint import pprint
 
 
 def lexco_permutations(_x: str) -> Generator:
@@ -87,7 +88,7 @@ def lexperms_reverse(_w: str) -> Generator:
 
         k = i - 1
         _c = 0
-        while k > _c:
+        while _c < k:
             pool[k], pool[_c] = pool[_c], pool[k]
             k -= 1
             _c += 1
@@ -100,22 +101,22 @@ def elegant_lexperms_fact(_x: str) -> Generator:
     """
 
     pool = list(_x)
-    _l = len(pool)
-    _n = _l - 1
-    i = _n
-    _c = [0] * _l
+    _n = len(pool)
+    _c = [0] * _n
+    i = 1
 
-    while i > 1:
-        _c[i] = 1
-        i -= 1
     yield ''.join(c for c in pool)
 
     while i:
-        if i > _n:
+        if i >= _n:
             break
 
-        if pool[_c[i]] < pool[i]:
-            pool[i], pool[_c[i]] = pool[_c[i]], pool[i]
+        if _c[i] < i:
+            if i % 2 != 0:
+                _u = 0
+            else:
+                _u = _c[i]
+            pool[i], pool[_u] = pool[_u], pool[i]
 
             k = i - 1
             j = 0
@@ -142,9 +143,10 @@ if __name__ == '__main__':
         r_l_r = list(lexperms_reverse(w))
 
         l_p = list(lexco_permutations(w))
-        print("elegant_lexperms_fact", r_e_f)
         print(f"{'-' * 113}")
-        print("lexperms_reverse", r_l_r)
+        pprint(r_e_f)
         print(f"{'-' * 113}")
-        print("lexco_permutations", l_p)
-        print(f"{'-' * 113}")
+#         print("lexperms_reverse", r_l_r)
+#         print(f"{'-' * 113}")
+#         print("lexco_permutations", l_p)
+#         print(f"{'-' * 113}")
