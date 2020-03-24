@@ -142,7 +142,6 @@ def elegant_lexperms_fact(_x: str) -> Generator:
             i = 1
             yield ''.join(c for c in pool)
         else:
-            # check oddness of i and set c[i] accordingly
             _c[i] = 0
             i = i + 1
 
