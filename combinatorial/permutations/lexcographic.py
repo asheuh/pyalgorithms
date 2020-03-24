@@ -64,8 +64,7 @@ def lexperms_reverse(_w: str) -> Generator:
     less efficient but works
     a more effient one is the one the follow(elegant_lexperms_fact())
     """
-    _l = len(_w)
-    _n = _l - 1
+    _n = len(_w)
     pool = list(_w)
 
     while _n:
@@ -74,10 +73,10 @@ def lexperms_reverse(_w: str) -> Generator:
 
         while pool[i] <= pool[i - 1]:
             i += 1
-            if i > _n:
+            if i >= _n:
                 break
 
-        if i > _n:
+        if i >= _n:
             break
 
         j = 0
@@ -101,14 +100,20 @@ def elegant_lexperms_fact(_x: str) -> Generator:
     """
 
     pool = list(_x)
-    _n = len(pool)
-    _c = [0] * _n
-    i = 1
+    _l = len(pool)
+    _n = _l - 1
+    _c = [0] * _l
+    i = _n
+    _y = _n - 1
+
+    while i > 1:
+        _c[i] = 1
+        i -= 1
 
     yield ''.join(c for c in pool)
 
     while i:
-        if i >= _n:
+        if i > _n:
             break
 
         if _c[i] < i:
@@ -116,6 +121,14 @@ def elegant_lexperms_fact(_x: str) -> Generator:
                 _u = 0
             else:
                 _u = _c[i]
+            if i == _y:
+                _u = _c[i]
+                i = _n
+                print('YES', pool, i, _u, _c)
+            if _c[_n] == _n:
+                print("FULL", _c, pool, _c[i], i, _u)
+            print(pool, i, _u, _c)
+            sleep(0.4)
             pool[i], pool[_u] = pool[_u], pool[i]
 
             k = i - 1
@@ -129,6 +142,7 @@ def elegant_lexperms_fact(_x: str) -> Generator:
             i = 1
             yield ''.join(c for c in pool)
         else:
+            # check oddness of i and set c[i] accordingly
             _c[i] = 0
             i = i + 1
 
@@ -140,12 +154,14 @@ if __name__ == '__main__':
         w = input("Enter value to permute: ")
         r_e_f = list(elegant_lexperms_fact(w))
 
-        r_l_r = list(lexperms_reverse(w))
+        #         r_l_r = list(lexperms_reverse(w))
 
-        l_p = list(lexco_permutations(w))
+        #         l_p = list(lexco_permutations(w))
         print(f"{'-' * 113}")
-        pprint(r_e_f)
+        print(r_e_f)
+        #         pprint(int(sum(int(n) for n in r_e_f) / len(r_e_f)))
         print(f"{'-' * 113}")
+#         print(r_l_r)
 #         print("lexperms_reverse", r_l_r)
 #         print(f"{'-' * 113}")
 #         print("lexco_permutations", l_p)
