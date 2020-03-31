@@ -280,19 +280,6 @@ def elegant_next_lex(_w: str) -> Generator:
             break
 
 
-def ibiggerIsGreater(w):
-
-    J = -1
-    for i in range(len(w) - 1, 0, -1):
-        for j in range(i - 1, J, -1):
-            if w[i] > w[j]:
-                I, J = i, j
-                break
-    if J == -1:
-        return "no answer"
-    return w[:J] + w[I] + ''.join(sorted(w[J:I] + w[I + 1:]))
-
-
 if __name__ == '__main__':
     #     w = input("Enter value to permute: ")
     #     r = test(w)
@@ -303,16 +290,6 @@ if __name__ == '__main__':
     #     with open('a100000.txt') as f:
     #         answers = f.readlines()
     #
-    #     t1 = time()
-    #     print("IBIGGERISBETTER\n")
-    #     for i in range(len(lines)):
-    #         w = lines[i].rstrip()
-    #         a = answers[i].rstrip()
-    #         bt = ibiggerIsGreater(w)
-    #         print(f'{True if bt == a else a}  {"->" * 10}  {bt[:85]}')
-    #     elt1 = time() - t1
-    #     print()
-    #
     #     t2 = time()
     #     print("LEXICO PERMUTATIONS FAST\n")
     #     for i in range(len(lines)):
@@ -322,12 +299,6 @@ if __name__ == '__main__':
     #         print(f'{True if r == a else {a: w}}  {"->" * 10}  {r[:85]}')
     #     elt2 = time() - t2
     #     print()
-    #
-    #     print(f"{'-' * 113}")
-    #     print(elt1, "NOT ELEGANT")
-    #     print("ibiggerIsGreater\n")
-    #     print(f"{'-' * 113}\n\n")
-    #
     #     print(elt2, "ELEGANT")
     #     print("lexco_permutations_fast\n")
     #     print(f"{'-' * 113}")
@@ -336,28 +307,19 @@ if __name__ == '__main__':
 
     for _ in range(T):
         w = input("Enter value to permute: ")
+
         t1 = time()
-        #         bt = ibiggerIsGreater(w)
         l_p = list(lexico_permutations(w))
-        #         r_e_f = list(lexperms_reverse_fact(w))
-        #         r_e_f = list(lexperms_reverse(w))
         elt1 = time() - t1
 
         t2 = time()
         r = list(lexico_permutations_fast(w))
-        #         r_l_r = list(lexperms_reverse(w))
-        #         e_n_l = list(elegant_next_lex(w))
         elt2 = time() - t2
 
         print(f"{'-' * 113}")
-        #         print(e_n_l)
         print(elt1, "NOT ELEGANT")
-        #         print("ibiggerIsGreater\n\n", bt)
         print("lexco_permutations\n\n", l_p)
-        #         print("lexperms_reverse_fact\n\n", r_e_f)
         print(f"{'-' * 113}")
-        #         print(r_l_r)
-        #         print("lexperms_reverse", r_l_r)
         print(elt2, "ELEGANT")
         print("lexco_permutations_fast\n\n", r)
         print(f"{'-' * 113}")
