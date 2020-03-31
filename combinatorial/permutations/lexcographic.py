@@ -20,7 +20,7 @@ def lexico_permutations(_x: str) -> Generator:
     ------
     The result obtained is in lexicographical order or alphabetincal order
     """
-    pool = sorted(list(_x))
+    pool = list(_x)
     n = len(pool)
     last = n - 1
 
@@ -75,12 +75,7 @@ def lexico_permutations_fast(_w: str) -> Generator:
     last = n - 1
 
     if n <= 1:
-        return
-
-    if n < 3:
-        p = reversed(pool)
-        yield ''.join(i for i in p)
-        return
+        return _w
 
     yield ''.join(i for i in pool)
 
@@ -89,6 +84,9 @@ def lexico_permutations_fast(_w: str) -> Generator:
         y = pool[j]
         z = pool[last]
 
+        if last == 1 and y >= z:
+            yield ''.join(i for i in pool)
+            break
         if y < z:
             pool[j] = z
             pool[last] = y
@@ -103,6 +101,8 @@ def lexico_permutations_fast(_w: str) -> Generator:
 
             while y >= x:
                 j = j - 1
+                if j < 0:
+                    break
                 x = y
                 y = pool[j]
 
@@ -133,9 +133,17 @@ def lexico_permutations_fast(_w: str) -> Generator:
         m = last - 1
         while y >= pool[m]:
             m = m - 1
+
         pool[j], pool[m] = pool[m], y
 
         pool[last], pool[j + 1] = pool[j + 1], z
+
+        k = j + 2
+        l = last - 1
+        while k < l:
+            pool[k], pool[l] = pool[l], pool[k]
+            k = k + 1
+            l = l - 1
         yield ''.join(i for i in pool)
 
 
@@ -241,9 +249,6 @@ def elegant_next_lex(_w: str) -> Generator:
     while n:
         pool[k] = q
 
-        print(p, q, k, pool)
-        sleep(.4)
-
         passed = False
         j = k
         while pool[j - 1] < pool[j]:
@@ -275,20 +280,67 @@ def elegant_next_lex(_w: str) -> Generator:
             break
 
 
+def ibiggerIsGreater(w):
+
+    J = -1
+    for i in range(len(w) - 1, 0, -1):
+        for j in range(i - 1, J, -1):
+            if w[i] > w[j]:
+                I, J = i, j
+                break
+    if J == -1:
+        return "no answer"
+    return w[:J] + w[I] + ''.join(sorted(w[J:I] + w[I + 1:]))
+
+
 if __name__ == '__main__':
     #     w = input("Enter value to permute: ")
-    #     r = list(lexco_permutations_fast(w))
-    #     print(r)
-    #     e_n_l = list(elegant_next_lex(''))
-    #     print(e_n_l)
+    #     r = test(w)
+    #     print("lexco_permutations_fast\n\n", r)
+    #     with open('100000.txt') as f:
+    #         lines = f.readlines()
+    #
+    #     with open('a100000.txt') as f:
+    #         answers = f.readlines()
+    #
+    #     t1 = time()
+    #     print("IBIGGERISBETTER\n")
+    #     for i in range(len(lines)):
+    #         w = lines[i].rstrip()
+    #         a = answers[i].rstrip()
+    #         bt = ibiggerIsGreater(w)
+    #         print(f'{True if bt == a else a}  {"->" * 10}  {bt[:85]}')
+    #     elt1 = time() - t1
+    #     print()
+    #
+    #     t2 = time()
+    #     print("LEXICO PERMUTATIONS FAST\n")
+    #     for i in range(len(lines)):
+    #         w = lines[i].rstrip()
+    #         a = answers[i].rstrip()
+    #         r = test(w)
+    #         print(f'{True if r == a else {a: w}}  {"->" * 10}  {r[:85]}')
+    #     elt2 = time() - t2
+    #     print()
+    #
+    #     print(f"{'-' * 113}")
+    #     print(elt1, "NOT ELEGANT")
+    #     print("ibiggerIsGreater\n")
+    #     print(f"{'-' * 113}\n\n")
+    #
+    #     print(elt2, "ELEGANT")
+    #     print("lexco_permutations_fast\n")
+    #     print(f"{'-' * 113}")
 
     T = int(input("Enter number of test cases: "))
 
     for _ in range(T):
         w = input("Enter value to permute: ")
         t1 = time()
+        #         bt = ibiggerIsGreater(w)
         l_p = list(lexico_permutations(w))
-        #         r_e_f = list(elegant_lexperms_fact(w))
+        #         r_e_f = list(lexperms_reverse_fact(w))
+        #         r_e_f = list(lexperms_reverse(w))
         elt1 = time() - t1
 
         t2 = time()
@@ -300,11 +352,12 @@ if __name__ == '__main__':
         print(f"{'-' * 113}")
         #         print(e_n_l)
         print(elt1, "NOT ELEGANT")
-        print("lexco_permutations", l_p)
-        #         print(r_e_f)
+        #         print("ibiggerIsGreater\n\n", bt)
+        print("lexco_permutations\n\n", l_p)
+        #         print("lexperms_reverse_fact\n\n", r_e_f)
         print(f"{'-' * 113}")
-        print(elt2, "ELEGANT")
         #         print(r_l_r)
         #         print("lexperms_reverse", r_l_r)
-        print("lexco_permutations_fast", r)
+        print(elt2, "ELEGANT")
+        print("lexco_permutations_fast\n\n", r)
         print(f"{'-' * 113}")
