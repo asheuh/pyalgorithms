@@ -317,9 +317,12 @@ if __name__ == '__main__':
         elt2 = time() - t2
 
         print(f"{'-' * 113}")
-        print(elt1, "NOT ELEGANT")
-        print("lexco_permutations\n\n", l_p)
+        print('ALGORITHM 1')
+        print('Time:', elt1)
+        print("\n\n", l_p)
         print(f"{'-' * 113}")
-        print(elt2, "ELEGANT")
-        print("lexco_permutations_fast\n\n", r)
+        print()
+        print('ALGORITHM 2')
+        print('Time: ', elt2)
+        print("\n\n", r)
         print(f"{'-' * 113}")
