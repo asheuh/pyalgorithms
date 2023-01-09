@@ -12,7 +12,7 @@ def lexico_permutations(_x: str) -> Generator:
     visiting them in lexicographic order
 
     >>> w = 'bot'
-    >>> result = permutations(w)
+    >>> result = lexico_permutations(w)
     >>> result
     >>> ['bot', 'bto', 'obt', 'otb', 'tbo', 'tob', 'obt']
 

@@ -48,11 +48,11 @@ if __name__ == '__main__':
         container = []
 
         for _ in range(n):
-            container.append(
-                list(
-                    map(
-                        int,
-                        input(f'Enter {n} space separated digits: ').rstrip().
-                        split())))
+            container.append(list(
+                map(
+                    int, 
+                    input(f'Enter {n} space separated digits: ').rstrip().split()
+                )
+            ))
 
         organizingContainers(container)

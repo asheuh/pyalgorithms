@@ -1,9 +1,13 @@
+"""
+Hash Table data structure
+"""
+
+
 class HashTable:
     def __init__(self, size=13):
         self.buckets = [None] * size
         self.size_occupied = 0
         self.load_factor = 0.75 # default for java 10
-        self.size = len(self.buckets)
 
     def size(self):
         return len(self.buckets)
@@ -13,23 +17,23 @@ class HashTable:
         where n: number of occupied slots in the buckets
               k: number of slots in the buckets
         """
-        return (self.size_occupied / self.size) > self.load_factor
+        return (self.size_occupied / self.size()) > self.load_factor
 
     def _hash(self, key):
-        return hash(key) % self.size
+        return hash(key) % self.size()
 
     def find_slot(self, key):
         """To solve collision using open addressing or closed hashing
-        We find the slot the has either a key same as the one we are
+        We find the slot that has either a key same as the one we are
         looking for or an empty slot in which we insert there
         """
         
         index = self._hash(key)
 
-        while self.buckets[index] and self.buckets[index][0] != key:
+        while self.buckets[index] is not None and self.buckets[index][0] != key:
             index = index - 1
             if index < 0:
-                index = index + self.size
+                index = index + self.size()
         return index
 
     def alt_rehashing(self):
@@ -40,9 +44,8 @@ class HashTable:
     def double_hash(self):
         """To double the size of buckets if load factor is exceeded"""
         temp = self.buckets
-        size = self.size
-        self.buckets = [None] * (self.size * 2)
-        self.size = len(self.buckets)
+        size = self.size()
+        self.buckets = [None] * (self.size() * 2)
 
         for i in range(size):
             item = temp[i]
@@ -84,7 +87,7 @@ class HashTable:
             i = i - 1
 
             if i < 0:
-                i = i + self.size
+                i = i + self.size()
 
             item = self.buckets[i]
 
@@ -101,33 +104,4 @@ class HashTable:
             j = i
 
         self.size_occupied -= 1
-
-if __name__ == '__main__':
-    data = [('A', 1), ('B', 2), ('C', 3), ('D', 4), ('E', 5), ('F', 6),
-            ('G', 7), ('H', 8), ('I', 9), ('J', 10), ('K', 11), ('L', 12),
-            ('M', 13), ('N', 14), ('O', 15), ('P', 16), ('Q', 17), ('R', 18),
-            ('S', 19), ('T', 20), ('V', 21), ('U', 22), ('W', 23), ('X', 24), ('Y', 25), ('Z', 26)]
-
-
-    ht = HashTable()
-
-    for item in data:
-        key, value = item
-        ht.insert(key, value)
-
-    print('ADDED', ht.buckets)
-
-    for item in data:
-        key, _ = item
-        ht.remove(key)
-
-    print('REMOVED', ht.buckets)
-    va = ht.get('A')
-    print(va)
-    print(ht.size_occupied)
-    ht.insert('Brian', '28')
-    bm = ht.get('BrIaN')
-    print(ht.buckets)
-    print('Value', bm)
-    print(ht.size_occupied)
 
