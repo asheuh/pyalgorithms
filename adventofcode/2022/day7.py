@@ -4,36 +4,26 @@ import pprint
 from read_file import read_data
 
 from time import sleep
+from collections import defaultdict
 
 
-def find_total(items):
+def find_total(items, is_part2=False):
     limit = 100000
     total = 0
     dirs = ['/']
+    sizes = defaultdict(int)
 
     i = 0
     n = len(items)
     while i < n:
-        to_add = 0
         item = items[i]
+        if re.findall(r'\d+', item):
+            number = re.findall(r'\d+', item)
+            num = int(number[0])
+            for dirr in dirs:
+                sizes[dirr] += num
 
-        if item.startswith('$') and item.split(' ')[1] == 'ls':
-            j = i + 1
-
-            while j < n and not items[j].startswith('$') and not items[j].startswith('dir'):
-                number = re.findall(r'\d+', items[j])
-
-                if number:
-                    num = int(number[0])
-                    to_add += num
-
-                    if to_add > limit:
-                        to_add = 0
-                        break
-                i = j
-                j += 1
-        
-        if item.startswith('$') and 'cd' in item:
+        elif item.startswith('$') and 'cd' in item:
             _, cd, d = item.split(' ')
             if d == '/':
                 dirs = ['/']
@@ -42,13 +32,23 @@ def find_total(items):
             else:
                 dirs.append(dirs[-1] + d + '/')
         i += 1
-        sleep(.005)
-        for dirrr in dirs:
-            total += to_add
-    return total
+    
+    # part two
+    if is_part2:
+        available_mem = 70000000
+        required_mem = 30000000
+        unused_mem = available_mem - sizes['/']
+        mins = []
+
+        for dir in sizes:
+            value = sizes[dir] 
+            if value + unused_mem >= required_mem:
+                mins.append(value)
+        return min(mins)
+    return sum(v for v in sizes.values() if v <= limit)
 
 
 if __name__ == '__main__':
     data = read_data('../data/2022/output_input.txt')
-    res = find_total(data)
+    res = find_total(data, True)
     print(res)
