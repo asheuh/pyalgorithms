@@ -76,6 +76,10 @@ def is_prime(n):
     return True
 
 
+def is_coprime(m, n):
+    return gcd(m, n) == 1
+
+
 if __name__ == '__main__':
     print(is_prime(4533973694165307953397369416530795339736941653079533973694165307953973694165307953))
 #     input = lambda: sys.stdin.readline().rstrip()
