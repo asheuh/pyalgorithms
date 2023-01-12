@@ -1,3 +1,6 @@
+from pyalgorithms.hackersdelight.py.utils import pop 
+
+
 def hamming_distance(x, y):
     if not x or not y:
         return
@@ -6,13 +9,8 @@ def hamming_distance(x, y):
         x, y = parse_string(x, y)
 
     xy_xor = x ^ y
+    return pop(xy_xor)
     
-    count = 0
-    while xy_xor:
-        xy_xor &= (xy_xor - 1)
-        count += 1
-    return count
-
 def parse_string(x, y):
     def to_bin(value):
         return ''.join(format(ord(i), 'b') for i in value)
