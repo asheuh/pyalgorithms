@@ -112,6 +112,7 @@ class BinarySearchTree:
             return root
         self.postorder(root.left)
         self.postorder(root.right)
+        print(root.val)
 
     def preorder_iter_dfs(self, root):
         if not root:
@@ -144,4 +145,21 @@ class BinarySearchTree:
                 items.append(node.val)
                 root = node.right
         return items
+
+    def post_order_iterative_dfs(self, root):
+        if not root:
+            return
+        items = []
+        last = None
+        while stack or root:
+            if root:
+                stack.append(root)
+                root = root.left
+            else:
+                peek_node = stack[-1]
+                if peek_node.right and last != peek_node.right:
+                    root = peek_node.right
+                else:
+                    items.append(peek_node.val)
+                    last = stack.pop()
 
