@@ -2,6 +2,8 @@
 Binary Search Tree
 """
 
+from queue import Queue
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None, parent=None):
         self.val = val
@@ -162,4 +164,68 @@ class BinarySearchTree:
                 else:
                     items.append(peek_node.val)
                     last = stack.pop()
+
+    def level_order(self, root):
+        q = Queue()
+        q.put(root)
+        res = []
+
+        while not q.empty():
+            node = q.get()
+            res.append(node.val)
+
+            if node.left:
+                q.put(node.left)
+
+            if node.right:
+                q.put(node.right)
+        return res
+
+
+class Validation:
+    def is_empty(self, bst):
+        return len(bst) == 0
+    
+    def is_valid_bst(self, root: TreeNode) -> bool:
+        def is_valid(n):
+            if not n.right:
+                return n.left.val < n.val
+            elif not n.left:
+                return n.right.val > n.val
+            return n.right.val > n.val > n.left.val
+        
+        stack = []
+        explored = []
+        stack.append((None, root))
+        valid = True
+        
+        while not self.is_empty(stack) and valid:
+            _node = stack.pop()
+            r = _node[0]
+            node = _node[1]
+            
+            if node and node not in explored:
+                if not node.right and not node.left:
+                    explored.append(node)
+                    continue
+                    
+                if is_valid(node):
+                    if r:
+                        if r.val < node.val:
+                            b = node
+                            while b.left and b.val > b.left.val:
+                                valid = b.left.val > r.val
+                                b = b.left
+                        elif r.val > node.val:
+                            b = node
+                            while b.right and b.val < b.right.val:
+                                valid = b.right.val < r.val
+                                b = b.right
+                    stack.append((node, node.left))
+                    stack.append((node, node.right))
+                else:
+                    valid = False
+                    break
+            explored.append(node)
+        return valid
 
