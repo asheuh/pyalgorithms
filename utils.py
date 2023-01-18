@@ -1,3 +1,9 @@
+class Node:
+    def __init__(self, state, root=None):
+        self.state = state
+        self.root = root
+
+
 class Vector:
     def __init__(self, x, y, height, width):
         self.x = x
@@ -87,3 +93,24 @@ def create_map(grid, key='four'):
             else:
                 mapp[(point, (x, y))] = vecs
     return mapp
+
+
+def contains(iterable, item):
+    for it in iterable:
+        if it.state == item.state:
+            return True
+    return False
+
+
+def find_start_goal(grid, s, g):
+    start = None
+    goal = None
+
+    for x, row in enumerate(grid):
+        for y, point in enumerate(row):
+            if point == s:
+                start = (x, y)
+            if point == g:
+                goal = (x, y)
+    return start, goal
+
