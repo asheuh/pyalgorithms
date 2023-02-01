@@ -1,3 +1,5 @@
+# Problem: https://challenges.wolframcloud.com/challenge/number-triangles
+
 def number_triangles(n: int):
     results = []
     for i in range(1, n + 1):

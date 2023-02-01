@@ -24,14 +24,14 @@ def decipher(encoded: str) -> str:
         decoded = ''
         cipher = encipher(n)
         for en in encoded:
-            if en in "' ,.?!":
+            if en in "' ,.?!=":
                 decoded += en
                 continue
-            decoded += cipher[en]
+            decoded += cipher[en.lower()]
         print(decoded)
-        sleep(1)
+        sleep(0.2)
 
 if __name__ == '__main__':
-    encoded = "f'ii exsb texq peb'p exsfkd"
+    encoded = "FEVZN SGEUA IITQJ CAKVN XJMXE PCZJB SNDEM VUBPE ZDORJ JIMXO OTMVV IDIHY RNOYU KSAWX GNMAN SIGIC CNMNB AYKXB"
     decipher(encoded)
 
