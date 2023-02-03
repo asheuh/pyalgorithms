@@ -54,33 +54,6 @@ def p_factor2(n):
         factor += 2
     return last_factor
 
-def p_factor3(n):
-    if (n % 2) == 0:
-        n //= 2
-        last_factor = 2
-
-        while (n % 2) == 0:
-            n //= 2
-    else:
-        last_factor = 1
-
-    factor = 3
-    max_factor = math.sqrt(n)
-
-    while n > 1 and factor <= max_factor:
-        if (n % factor) == 0:
-            n //= factor
-            last_factor = factor
-
-            while (n % factor) == 0:
-                n //= factor
-            max_factor = math.sqrt(n)
-        factor += 2
-
-    if n == 1:
-        return last_factor
-    return n
-
 def power(x: float, n: int) -> float:
     if n == 0:
         return 1
@@ -145,16 +118,4 @@ if __name__ == '__main__':
     r2 = power_digit_sum(2, 1000)
     is_p = is_prime(17)
     t = 2**31
-    t1 = p_factor3(-t)
-    print('ANSWER', t1)
 
-#     t1 = time()
-#     result = p_factor3(n)
-#     e1 = time() - t1
-#     print(result, e1)
-
-#     t2 = time()
-#     r = p_factor2(n)
-#     e2 = time() - t2
-#     print(result, r)
-#     print(e1, e2)
