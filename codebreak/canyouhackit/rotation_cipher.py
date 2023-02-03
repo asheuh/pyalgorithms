@@ -32,6 +32,6 @@ def decipher(encoded: str) -> str:
         sleep(0.2)
 
 if __name__ == '__main__':
-    encoded = "FEVZN SGEUA IITQJ CAKVN XJMXE PCZJB SNDEM VUBPE ZDORJ JIMXO OTMVV IDIHY RNOYU KSAWX GNMAN SIGIC CNMNB AYKXB"
+    encoded = "c'g ufmi domn u aclf, mnuhxcha ch zlihn iz u vis, umecha bcg ni fipy byl."
     decipher(encoded)
 

