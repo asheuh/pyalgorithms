@@ -11,22 +11,24 @@ def encoding(encoded: str) -> list:
     for binary in bins:
         k = int(binary, 2)
         decoded += chr(k)
+    return split_in_twos(decoded, 2)
 
+def split_in_twos(decoded: str, k=1):
+    # Spiliting in pairs of 2
     n = len(decoded)
     prev = 0
-    hexpair = []
-    # Spiliting in pairs of 2
-    for i in range(2, n + 1, 2):
+    for i in range(k, n + 1, k):
         pair = decoded[prev: i]
         prev = i
-        hexpair.append(pair)
-    return hexpair
+        yield pair
 
-def decode(seq: list):
+def _decode(seq: list):
     return ''.join(chr(int(c, 16)) for c in seq)
 
 
-encoded = "QlpoOTFBWSZTWS+qfEEAAHNYAEAAQABgACAAcDNNBJ6pHeAzEBcuoZksRGTSbFlBUqMWyaxmVSVoGjWe1bmzT4u5IpwoSBfVPiCA"
-decoded = encoding(encoded)
-d = decode(decoded)
-print(d)
+if __name__ == '__main__':
+    encoded = "QlpoOTFBWSZTWS+qfEEAAHNYAEAAQABgACAAcDNNBJ6pHeAzEBcuoZksRGTSbFlBUqMWyaxmVSVoGjWe1bmzT4u5IpwoSBfVPiCA"
+    decoded = encoding(encoded)
+    d = _decode(decoded)
+    print(d)
+

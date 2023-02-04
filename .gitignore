@@ -1,8 +1,13 @@
 # Vim stuff
 *.sw?
 .DS_Store
+*.xml
 
 
 __pycache__
 venv/
 .ipynb_checkpoints/
+_rels/
+word/
+docProps/
+nv/
