@@ -1,3 +1,4 @@
+import os
 import pprint
 import requests
 from typing import Generator
@@ -11,11 +12,11 @@ def brute_force_pin_hack():
     number_range = range(10)
     host = 'https://hack.ainfosec.com/challenge/submit-answer/'
     cookies = {
-        "csrftoken": "w4W4jqR0NuouLLsle5bmes9iLpMOP2XUGBabHUtHG0EGLMEfDErYrIknOr6mE3JY",
-        "sessionid": "eytcicnshacqh0sc0cq9njvpbqm9yw1f"
+        "csrftoken": os.environ.get('CSRTOKEN'),
+        "sessionid": os.environ.get('SESSIONID')
     }
     payload = {
-        "csrfmiddlewaretoken": "kaKSjH5fAYccwFR879rdn1J0Z6Qun52TuHYZHbHWtusowG32wIHPAhU528a2c6OX",
+        "csrfmiddlewaretoken": os.environ.get('CSRFMIDDLEWARETOKEN'),
         "challenge_id": "brutal_force"
     }
     digits = [3, 4]

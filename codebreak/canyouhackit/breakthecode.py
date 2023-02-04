@@ -1,3 +1,4 @@
+import os
 import requests
 import pprint
 
@@ -15,11 +16,11 @@ def make_api_call(payload, cookies):
 def break_alpha_numeric_code():
     alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"
     cookies = {
-        "csrftoken": "w4W4jqR0NuouLLsle5bmes9iLpMOP2XUGBabHUtHG0EGLMEfDErYrIknOr6mE3JY",
-        "sessionid": "eytcicnshacqh0sc0cq9njvpbqm9yw1f"
+        "csrftoken": os.environ.get('CSRTOKEN'),
+        "sessionid": os.environ.get('SESSIONID')
     }
     payload = {
-        "csrfmiddlewaretoken": "kaKSjH5fAYccwFR879rdn1J0Z6Qun52TuHYZHbHWtusowG32wIHPAhU528a2c6OX",
+        "csrfmiddlewaretoken": os.environ.get('CSRFMIDDLEWARETOKEN'),
         "challenge_id": "code_breaker"
     }
     count = 0
