@@ -4,7 +4,6 @@ from string import ascii_lowercase, ascii_uppercase
 
 def xor_decryption(codes, key_length):
     alphabets = ascii_lowercase
-    alphabets2 = ascii_uppercase
     perms = permutations(alphabets, key_length)
     results = []
     plain_text = ''

@@ -53,7 +53,7 @@ def gray_binary_code_generation(a, p):
 
         r.append(s)
         r.append(k)
-        print(s, k, x)
+        print(x)
 
         j = f[0]
         f[0] = 0
@@ -69,7 +69,7 @@ def gray_binary_code_generation(a, p):
 
 
 if __name__ == '__main__':
-    a = [1, 7, 2, 4, 5]
+    a = [1, 7, 2, 4, 5, 3]
     r = gray_binary_code_generation(a, 7)
     print(r)
     print()
