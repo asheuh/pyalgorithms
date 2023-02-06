@@ -5,6 +5,7 @@ def read_file(filename):
     return open(filename)
 
 def create_file(encoded_file: str):
+    # Create and manually unzip or you can do it with python using zipfile lib
     with open('data/output.zip', 'wb') as f:
         base64.decode(encoded_file, f)
 
@@ -20,7 +21,7 @@ def decode():
     return text
     
 if __name__ == '__main__':
-    encoded = read_file('base64.txt')
+    encoded = read_file('data/base64.txt')
     create_file(encoded)
     d = decode()
     print(d)
