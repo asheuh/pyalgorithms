@@ -37,7 +37,8 @@ def map_seeds(seeds, is_part_two):
 
     f = [c for i, c in enumerate(seeds) if not i & 1]
     s = [c for i, c in enumerate(seeds) if i & 1]
-    return list(zip(f, s))
+    zipped = zip(f, s)
+    return [(z[0], sum(z) - 1) for z in zipped]
 
 def create_map(almanac, is_part_two):
     mapper = {}
@@ -45,13 +46,80 @@ def create_map(almanac, is_part_two):
     for al in almanac:
         for key, value in al.items():
             if key.lower() == 'seeds':
-                mapper[key.lower()] = map_seeds(value[0], is_part_two)
+                mapper[key.lower()] = map_seeds(value[0], is_part_two) 
             else:
                 mapper.update(parse_map(key, value))
     return mapper
 
-def get_location(seed, mapped, is_part_two):
-    stack = [seed]
+def get_location_part_one(seed, mapped, keys): 
+    prev = seed
+
+    for key in keys:
+        ranges = mapped.get(key, {})
+        start = [item for i, item in enumerate(ranges) if not i & 1]
+        end = [item for i, item in enumerate(ranges) if i & 1]
+        x = prev[0] 
+
+        for j in range(len(start)):
+            j_start = start[j]
+            j_end = end[j]
+            f_j_start, val_start = j_start
+            f_j_end, val_end = j_end
+
+            if not (f_j_start <= x <= f_j_end):
+                continue
+
+            # Find the value of interest
+            # Part two 
+            prev = ((x - f_j_start) + val_start, )
+    return prev
+
+def get_location_part_two(seeds, mapped, keys):
+    tseeds = seeds
+
+    for key in keys:
+        ranges = mapped.get(key, {})
+        ranges.sort(key=lambda x: x[0])
+        start = [item for i, item in enumerate(ranges) if not i & 1]
+        end = [item for i, item in enumerate(ranges) if i & 1]
+        stack = []
+
+        for seed in tseeds:
+            seed_start, seed_end = seed
+
+            for j in range(len(start)):
+                j_start = start[j]
+                j_end = end[j]
+                f_j_start, val_start = j_start
+                f_j_end, val_end = j_end
+                possible_start = max(f_j_start, seed_start)
+
+                if possible_start > seed_end:
+                    break
+
+                possible_end = min(f_j_end, seed_end)
+
+                if possible_end >= possible_start:
+                    if seed_start < possible_start:
+                        stack.append((seed_start, possible_start - 1))
+
+                    stack.append((
+                        possible_start - (f_j_start - val_start),
+                        possible_end - (f_j_start - val_start)
+                    ))
+                    seed_start = possible_end + 1
+
+            if seed_start < seed_end:
+                stack.append((seed_start, seed_end))
+
+        tseeds = stack.copy()
+    stack.sort(key=lambda x: x[0])
+    return stack[0][0] if stack else None
+
+def solve(almanac, is_part_two=False):
+    mapped = create_map(almanac, is_part_two)
+    seeds = mapped.get('seeds')
+    lowest = math.inf
     keys = [
         'seed-to-soil',
         'soil-to-fertilizer',
@@ -61,50 +129,19 @@ def get_location(seed, mapped, is_part_two):
         'temperature-to-humidity',
         'humidity-to-location'
     ]
-    prev = seed
 
-    while stack:
-        prev = stack.pop()
-
-        for key in keys:
-            ranges = mapped.get(key, {})
-            start = [item for i, item in enumerate(ranges) if not i & 1]
-            end = [item for i, item in enumerate(ranges) if i & 1]
-            x = prev[0] 
-
-            for j in range(len(start)):
-                j_start = start[j]
-                j_end = end[j]
-                f_j_start, val_start = j_start
-                f_j_end, val_end = j_end
-
-                if not (f_j_start <= x <= f_j_end):
-                    continue
-
-                # Find the value of interest
-                # Part two 
-                k = sum(prev)
-                p = prev
-                prev = ((x - f_j_start) + val_start, )
-
-        if is_part_two:
-            pass
-    return prev
-
-def solve(almanac, is_part_two=False):
-    mapped = create_map(almanac, is_part_two)
-    seeds = mapped.get('seeds')
-    lowest = math.inf
+    if is_part_two:
+        return get_location_part_two(seeds, mapped, keys)
 
     for seed in seeds:
-        location, = get_location(seed, mapped, is_part_two)
+        location, = get_location_part_one(seed, mapped, keys)
         if location < lowest:
             lowest = location
     return lowest
 
 
 if __name__ == '__main__':
-    data = read_data('../data/2023/day05_input.txt', parser=parser, sep="\n\n")
+    data = read_data('./data/2023/day05_input.txt', parser=parser, sep='\n\n')
     result = solve(data)
     print('PART ONE: ', result)
     pt_result = solve(data, True)
