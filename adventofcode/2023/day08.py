@@ -1,6 +1,9 @@
 import re
 
+from functools import reduce
+
 from read_file import read_data
+from python.pyalgorithms.peuler.pymath import lcm
 import pprint
 
 
@@ -43,17 +46,19 @@ def solve_part_two(data):
     mapper = create_map(data[1])
     start_nodes = get_start_nodes(mapper) 
     n = len(directions)
-    i, count = 0, 0 # Count is 1 because of step 0
+    i, count = 0, 1 # Count is 1 because of step 0
+    _all = 0
+    steps = []
 
     while i < n:
         dr = directions[i]
         new_start_nodes = []
-        _all = 0
 
         for start in start_nodes:
             to = mapper[start][dr]
             if to.endswith('Z'):
                 _all += 1
+                steps.append(count)
 
             new_start_nodes.append(to)
 
@@ -66,7 +71,10 @@ def solve_part_two(data):
 
         if i >= n:
             i = 0
-    return count
+    return get_lcm(steps)
+
+def get_lcm(steps):
+    return reduce(lambda a, b: lcm(a, b), steps) 
 
 def create_map(maps):
     mapper = {}

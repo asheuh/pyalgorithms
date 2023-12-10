@@ -16,6 +16,9 @@ def first_digit(n):
         n //= 10
     return n
 
+def lcm(a, b):
+    return b * (a // gcd(a, b))
+
 def gcd(m, n):
     if n <= 0:
         return m
@@ -79,8 +82,19 @@ def is_prime(n):
 def is_coprime(m, n):
     return gcd(m, n) == 1
 
+def i_factors(n):
+    # Integer factors
+    factors = []
+    max_factor = math.floor(math.sqrt(n))
+
+    for i in range(1, max_factor + 1):
+        if (n % i) == 0:
+            factors.extend([i, n//i])
+    return set(factors)
 
 def prime_factor(n):
+    on = n
+    factors = set()
     if (n % 2) == 0:
         n //= 2
         last_factor = 2
@@ -90,6 +104,7 @@ def prime_factor(n):
     else:
         last_factor = 1
 
+    factors.add(last_factor)
     factor = 3
     max_factor = math.sqrt(n)
 
@@ -101,15 +116,21 @@ def prime_factor(n):
             while (n % factor) == 0:
                 n //= factor
             max_factor = math.sqrt(n)
+            factors.add(factor)
         factor += 2
 
     if n == 1:
-        return last_factor
-    return n
+        return on, factors
+    factors.add(n)
+    return on, list(factors)
+
+
+def my_sum(n):
+    return (n * (n + 1)) // 2
 
 
 if __name__ == '__main__':
-    print(prime_factor(45339736943483388493))
+    print(_factors(100))
 #     input = lambda: sys.stdin.readline().rstrip()
 #     print('Enter a number')
 #     x = int(input())
