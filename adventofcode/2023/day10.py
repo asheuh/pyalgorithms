@@ -46,7 +46,29 @@ def solve(maze, is_part_two=False):
 
         seen.append(node)
         prev = node
+
+    if is_part_two:
+        return count_enclosed_area(maze, seen, start)
     return len(seen) // 2
+
+def count_enclosed_area(maze, border, start):
+    s, (r, c) = start
+    bpoints = [point for c, point in border]
+    maze = [[i for i in f] for f in maze]
+    maze[r][c] = 'L'
+    count = 0
+
+    for x, row in enumerate(maze):
+        is_inside = False
+
+        for y, char in enumerate(row):
+            is_piped = (x, y) in bpoints
+            if is_piped and (char in ['J', 'L', '|']):
+                is_inside = not is_inside
+
+            elif not is_piped and is_inside:
+                count += 1
+    return count
 
 def is_contain(iterable, item):
     for i in iterable:
@@ -87,7 +109,10 @@ if __name__ == '__main__':
     data = read_data('./data/2023/day10_input.txt')
     st = time()
     result = solve(data)
+    st = time()
+    pt_result = solve(data, True)
     et = time()
     print('PART ONE =>', result)
-    print('PART ONE TIME TAKEN =>', et - st)
+    print('PART TWO =>', pt_result)
+    print('TIME TAKEN =>', et - st)
 
