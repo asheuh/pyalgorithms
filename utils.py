@@ -80,19 +80,27 @@ def process_data(grid):
     return grid1
 
 
-def create_map(grid, key='four'):
+def create_map(grid, s, g, key='four'):
     mapp = {}
     h = len(grid) # height
     w = len(grid[0]) # width
+    start = None
+    goal = None
 
     for x, row in enumerate(grid):
         for y, point in enumerate(row):
+            if point == s:
+                start = (x, y)
+
+            if point == g:
+                goal = (x, y)
+
             vecs = neighbouring_vectors((x, y), h, w, key)
             if key == 'all' or key == 'chiton':
                 mapp[(x, y)] = (int(point), vecs)
             else:
                 mapp[(point, (x, y))] = vecs
-    return mapp
+    return mapp, (start, goal)
 
 
 def contains(iterable, item):
