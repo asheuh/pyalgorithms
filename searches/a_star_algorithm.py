@@ -1,12 +1,15 @@
 import math
-from typing import List
 
-from pyalgorithms.utils import neighbouring_vectors
+from heapq import heappush, heappop
+from collections import defaultdict
+from typing import List, Any
+
+from python.pyalgorithms.utils import neighbouring_vectors
 
 
 class AStarAlgorithm:
     @staticmethod
-    def contains(self, iterable: List[Any], item):
+    def contains(iterable: List[Any], item):
         for value in iterable:
             if value == item:
                 return True
@@ -25,8 +28,9 @@ class AStarAlgorithm:
         nx, ny = neighbour
         return mapp[nx][ny]
 
-    def algorithm(self, start, goal):
+    def algorithm(self, start, goal, hw):
         heap = []
+        h, w = hw
         heappush(heap, (0, start)) # Initialize start with zero cost
         came_from = {}
         # For node n, g_score[n] is the cost of the cheapest path from start to n currently known.
@@ -47,8 +51,7 @@ class AStarAlgorithm:
                 while current in came_from:
                     current = came_from[current]
                     total_path = [*[current], *total_path]
-                result = total_path
-                break
+                return total_path
 
             neighbours = neighbouring_vectors(current, h, w)
             
@@ -58,11 +61,12 @@ class AStarAlgorithm:
                     g_score[child] = math.inf
 
                 # d(current, child) is the weight of the edge from current to child
-                t_score = g_score[current] + dist(current, child)
-                if t_score < g_score[current]:
+                t_score = g_score[current] + self.heury(current, child)
+                if t_score < g_score[child]:
                     came_from[child] = current
                     g_score[child] = t_score
                     f_score[child] = t_score + self.heury(child, goal)
 
-                    if not contains(heap, child):
-                        heappush(heap, (t_g_score, child))
+                    if not self.contains(heap, child):
+                        heappush(heap, (t_score, child))
+        return 'Failed'
