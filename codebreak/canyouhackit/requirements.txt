@@ -1,0 +1,79 @@
+aiohttp==3.9.0
+aiosignal==1.3.1
+appnope==0.1.3
+asttokens==2.2.1
+attrs==23.1.0
+backcall==0.2.0
+certifi @ file:///private/tmp/python-certifi-20231008-5803-12332sz/certifi-2023.7.22
+cffi @ file:///private/tmp/cffi-20231015-5890-1t5aans/cffi-1.16.0
+charset-normalizer==3.3.2
+colour==0.1.5
+contourpy==1.0.7
+cycler==0.11.0
+Cython==0.29.33
+decorator==5.1.1
+distlib==0.3.7
+executing==1.2.0
+filelock==3.13.1
+fonttools==4.39.2
+frozenlist==1.4.0
+glcontext==2.3.7
+idna==3.4
+ipython==8.11.0
+isosurfaces==0.1.0
+jedi==0.18.2
+kiwisolver==1.4.4
+# Editable install with no version control (manimgl==1.6.1)
+-e /Users/nitrika/Projects/manim
+ManimPango==0.4.3
+mapbox-earcut==1.0.1
+markdown-it-py==2.2.0
+matplotlib==3.7.1
+matplotlib-inline==0.1.6
+mdurl==0.1.2
+moderngl==5.8.1
+moderngl-window==2.4.3
+mpmath==1.3.0
+multidict==6.0.4
+multipledispatch==0.6.0
+natsort==8.3.1
+numpy==1.24.2
+packaging==23.0
+parso==0.8.3
+pexpect==4.8.0
+pickleshare==0.7.5
+Pillow @ file:///private/tmp/pillow-20231015-8226-k8q95f/Pillow-10.1.0
+platformdirs==3.11.0
+prompt-toolkit==3.0.38
+psutil @ file:///private/tmp/python-psutil-20231015-5790-1i8kq9n/psutil-5.9.6
+ptyprocess==0.7.0
+pure-eval==0.2.2
+pycparser @ file:///private/tmp/pycparser-20231013-5647-12y5m5s/pycparser-2.21
+pydub==0.25.1
+pyglet==2.0.5
+Pygments==2.14.0
+pyobjc-core==9.0.1
+pyobjc-framework-Cocoa==9.0.1
+PyOpenGL==3.1.6
+pyparsing==3.0.9
+pyperclip==1.8.2
+pyrr==0.10.3
+python-dateutil==2.8.2
+python-dotenv==1.0.0
+PyYAML @ file:///private/tmp/pyyaml-20231019-6030-1l8rk6l/PyYAML-6.0.1
+requests==2.31.0
+rich==13.3.2
+scipy==1.10.1
+screeninfo==0.8.1
+six==1.16.0
+skia-pathops==0.7.4
+stack-data==0.6.2
+svgelements==1.9.1
+sympy==1.11.1
+tqdm==4.65.0
+traitlets==5.9.0
+urllib3==2.1.0
+validators==0.20.0
+virtualenv==20.24.6
+wcwidth==0.2.6
+yarl==1.9.2

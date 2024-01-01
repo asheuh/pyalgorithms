@@ -38,10 +38,16 @@ def solve(encoded: str) -> str:
         print(decoded)
         sleep(0.2)
 
+
 if __name__ == '__main__':
     encoded = "c'g ufmi domn u aclf, mnuhxcha ch zlihn iz u vis, umecha bcg ni fipy byl."
-    plain_text = 'This is the way life is. A mystery.'
-    cipher = encipher(plain_text, 11)
-    plain = decipher(cipher, 11)
-    solve(encoded)
+    plain_text = "This is a new year!"
+    cipher = encipher(plain_text, 11235813213455)
+    print('CIPHER', cipher)
+    print()
+    cipher = open('./2023.txt').read()
+    plain = decipher(cipher, 11235813213455)
+    print(plain)
+    print()
+#     solve(encoded)
 
