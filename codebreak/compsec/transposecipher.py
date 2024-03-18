@@ -1,23 +1,23 @@
 import re
+import math
 import pprint
 
 from string import ascii_lowercase, punctuation
 
-def transposecipher(fkey: str, skey: str, message: str, remove_dup: bool, encrypt: bool=True):
+def parse_string(key, remove_dup):
+    if remove_dup:
+        newkey = ''
+        _keys = {}
+        for c in key:
+            if c in _keys:
+                continue
+            newkey += c
+            _keys[c] = True
+        key = newkey
+    return key.replace(' ', '').translate(str.maketrans('', '', punctuation))
+
+def transposecipher(fkey: str, skey: str, message: str, remove_dup: bool=True):
     keys = [fkey, skey]
-
-    def parse_string(key, remove_dup):
-        if remove_dup:
-            newkey = ''
-            _keys = {}
-            for c in key:
-                if c in _keys:
-                    continue
-                newkey += c
-                _keys[c] = True
-            key = newkey
-        return key.replace(' ', '').translate(str.maketrans('', '', punctuation))
-
     message = parse_string(message, False)
     for key in keys:
         key = parse_string(key, remove_dup) # memory word
@@ -41,7 +41,7 @@ def transposecipher(fkey: str, skey: str, message: str, remove_dup: bool, encryp
             if index in indices:
                 index += 1
 
-            unparsedcipher[index + 1] = transposed[i].replace('*', '') 
+            unparsedcipher[index + 1] = transposed[i].replace('*', ' ') 
             indices[index] = True
 
         mcipher = ''
@@ -49,7 +49,7 @@ def transposecipher(fkey: str, skey: str, message: str, remove_dup: bool, encryp
             mcipher += unparsedcipher[rank]
 
         message = mcipher
-    return parse_blocks(message.upper(), 5) 
+    return message.upper()
 
 def parse_blocks(cipher, size):
     result = ''
@@ -60,9 +60,50 @@ def parse_blocks(cipher, size):
     return result
 
 
+def decrypt(cipher, keys):
+    _cipher = parse_string(cipher, False)
+    n = len(_cipher)
+
+    for key in keys:
+        key = parse_string(key, True)
+        key_map = list(sorted(key))
+        row = len(key)
+        col = math.ceil(n / row)
+        grid = {}
+        rank = 1
+        tcipher = cipher
+
+        while tcipher:
+            block = tcipher[:col]
+            tcipher = tcipher[col:]
+            grid[rank] = block
+            rank += 1
+
+        indices = {}
+        dec_cipher = []
+        for c in key:
+            index = key_map.index(c) + 1
+            if index in indices:
+                index += 1
+
+            dec_cipher.append(grid[index])
+
+        message = ''
+        for text in zip(*dec_cipher):
+            message += ''.join(text)
+
+        cipher = message
+    return cipher
+
+
 if __name__ == '__main__':
     fkey = 'cryptographic'
     skey = 'network security'
     message = 'Be at the third pillar from the left outside the lyceum theatre tonight at seven. If you are distrustful bring two friends.'
-    cipher = transposecipher(fkey, skey, message, True)
+    cipher = transposecipher(fkey, skey, message)
+    print('ENCRYPTED:')
     print(cipher)
+    print()
+    message = decrypt(cipher, [skey, fkey])
+    print('DECRYPTED:')
+    print(message)
