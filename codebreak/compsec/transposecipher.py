@@ -2,7 +2,7 @@ import re
 import math
 import pprint
 
-from string import ascii_lowercase, punctuation
+from helpers import *
 
 def parse_string(key, remove_dup):
     if remove_dup:
@@ -14,7 +14,7 @@ def parse_string(key, remove_dup):
             newkey += c
             _keys[c] = True
         key = newkey
-    return key.replace(' ', '').translate(str.maketrans('', '', punctuation))
+    return to_ignore(key)
 
 def transposecipher(fkey: str, skey: str, message: str, remove_dup: bool=True):
     keys = [fkey, skey]
