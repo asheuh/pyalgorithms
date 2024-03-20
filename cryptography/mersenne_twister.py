@@ -1,7 +1,7 @@
 # https://en.wikipedia.org/wiki/Mersenne_Twister
 
 class MersenneTwister:
-    def __init__(self, seed):
+    def __init__(self, seed=4143):
         self.seed = seed
         self.w = 32
         self.f = 1812433253
